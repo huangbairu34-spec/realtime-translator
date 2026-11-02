@@ -1,4 +1,4 @@
-﻿"""配置加载与管理。
+"""配置加载与管理。
 
 读取 config/config.yaml，提供点号访问（如 cfg.get("asr.model")），
 并支持把运行时改动写回文件。
@@ -6,7 +6,6 @@
 from __future__ import annotations
 
 import os
-import re
 import threading
 from pathlib import Path
 from typing import Any
@@ -28,14 +27,7 @@ class Config:
         with self._lock:
             if self.path.exists():
                 with open(self.path, "r", encoding="utf-8") as f:
-                    raw = f.read()
-                # 支持 ${ENV_VAR} 占位符：真实密钥放环境变量，配置文件可安全提交
-                raw = re.sub(
-                    r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}",
-                    lambda m: os.environ.get(m.group(1), ""),
-                    raw,
-                )
-                self._data = yaml.safe_load(raw) or {}
+                    self._data = yaml.safe_load(f) or {}
             else:
                 self._data = {}
         return self
