@@ -1,0 +1,53 @@
+audio:
+  device: 耳机 (2- WH-1000XM6)
+  sample_rate: 16000
+  channels: 2
+  block_ms: 60
+streaming:
+  enabled: true
+  interval_ms: 900
+  min_partial_s: 0.6
+  max_partial_s: 7.0
+  commit_silence_ms: 350
+  keep_context_s: 1.0
+vad:
+  mode: webrtc
+  silence_ms: 350
+  min_speech_ms: 300
+  max_segment_s: 15
+  energy_threshold: 0.01
+asr:
+  model: medium
+  device: cuda
+  compute_type: float16
+  language: ja
+  beam_size: 1
+  initial_prompt: ''
+translate:
+  enabled: true
+  base_url: https://api.deepseek.com/v1
+  api_key: ${DEEPSEEK_API_KEY}
+  model: deepseek-chat
+  target_lang: zh
+  fallback_lang: en
+  temperature: 0.3
+  timeout: 20
+  context_turns: 2
+  stream: true
+  speculative: true
+subtitle:
+  font_family: Microsoft YaHei UI
+  font_size: 20
+  color: '#FFFFFF'
+  source_color: '#9FB3C8'
+  bg_color: '#000000'
+  bg_opacity: 0.55
+  width_ratio: 0.7
+  bottom_margin: 90
+  max_lines: 4
+  show_source: true
+  click_through: false
+ui:
+  show_history: true
+  hotkey_toggle: ctrl+alt+t
+  hotkey_clear: ctrl+alt+c
