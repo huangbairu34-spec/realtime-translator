@@ -1,0 +1,3 @@
+﻿# 这些文件在镜像仓库里是"已加固版本"，同步时不要用源目录的副本覆盖
+src/config.py
+config/config.example.yaml
