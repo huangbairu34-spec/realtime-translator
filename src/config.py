@@ -10,7 +10,12 @@ import threading
 from pathlib import Path
 from typing import Any
 
+import re
+
 import yaml
+
+# 支持 ${ENV_VAR} 形式的占位符：配置文件里不写明文密钥，运行时从环境变量展开
+_PLACEHOLDER = re.compile(r"\$\{([A-Za-z_][A-Za-z0-9_]*)\}")
 
 ROOT = Path(__file__).resolve().parent.parent
 CONFIG_PATH = ROOT / "config" / "config.yaml"
@@ -27,7 +32,9 @@ class Config:
         with self._lock:
             if self.path.exists():
                 with open(self.path, "r", encoding="utf-8") as f:
-                    self._data = yaml.safe_load(f) or {}
+                    raw = f.read()
+                raw = _PLACEHOLDER.sub(lambda m: os.environ.get(m.group(1), ""), raw)
+                self._data = yaml.safe_load(raw) or {}
             else:
                 self._data = {}
         return self
